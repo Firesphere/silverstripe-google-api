@@ -1,0 +1,17 @@
+<phpunit bootstrap="framework/tests/bootstrap.php" colors="true">
+
+	<testsuite name="Default">
+		<directory>google-api/tests</directory>
+	</testsuite>
+	<filter>
+		<whitelist processUncoveredFilesFromWhitelist="true">
+			<directory suffix=".php">google-api/code/</directory>
+		</whitelist>
+	</filter>
+
+	<groups>
+		<exclude>
+			<group>sanitychecks</group>
+		</exclude>
+	</groups>
+</phpunit>

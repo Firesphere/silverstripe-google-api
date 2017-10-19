@@ -1,0 +1,30 @@
+{
+  "name": "firesphere/google-api",
+  "description": "Connect to the Google Analytics API to get page visits",
+  "type": "silverstripe-module",
+  "license": "BSD-3-Clause",
+  "keywords": [
+    "Ninja Unicorns",
+    "silverstripe",
+    "Google",
+    "Analytics",
+    "API",
+    "Ninja",
+    "Unicorns"
+  ],
+  "authors": [
+    {
+      "name": "Ninja Unicorns",
+      "email": "ninja-unicorns@silverstripe.com"
+    }
+  ],
+  "require": {
+    "silverstripe/framework": "^3.2",
+    "silverstripe/cms": "^3.2",
+    "google/apiclient": "^2.0"
+  },
+  "extra": {
+    "installer-name": "google-api"
+  },
+  "target-dir": "google-api"
+}

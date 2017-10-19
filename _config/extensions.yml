@@ -1,0 +1,6 @@
+SiteConfig:
+  extensions:
+    - GoogleAPISiteConfigExtension
+Page:
+  extensions:
+    - GoogleAPIPageExtension

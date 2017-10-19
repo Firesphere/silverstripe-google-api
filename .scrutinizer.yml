@@ -1,0 +1,11 @@
+checks:
+  php: true
+
+build:
+  nodes:
+    analysis:
+      tests:
+        override: [php-scrutinizer-run]
+
+filter:
+  paths: ["code/*", "tests/*"]
