@@ -14,7 +14,7 @@ class GoogleClientService
      */
     public function __construct()
     {
-        if (!defined('SS_ANALYTICS_KEY')) {
+        if (!defined('SS_ANALYTICS_KEY') || !SS_ANALYTICS_KEY) {
             throw new LogicException('No analytics API set up');
         }
 

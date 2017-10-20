@@ -69,13 +69,22 @@ class GoogleAnalyticsReportService
         $config = SiteConfig::current_site_config();
 
         $request = new Google_Service_AnalyticsReporting_ReportRequest();
-        $request->setDimensions(['name' => 'ga:pagePath']);
+        $dimension = $this->getDimensions();
+        $request->setDimensions($dimension);
         $request->setViewId($config->Viewid);
         $request->setDimensionFilterClauses($this->getDimensionFilterClauses());
         $request->setDateRanges($this->getDateRange());
         $request->setMetrics([$this->getMetrics()]);
 
         return $request;
+    }
+
+    public function getDimensions()
+    {
+        $dimension = new Google_Service_AnalyticsReporting_Dimension();
+        $dimension->setName('ga:pagePath');
+
+        return [$dimension];
     }
 
     /**

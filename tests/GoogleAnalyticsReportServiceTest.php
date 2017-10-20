@@ -80,13 +80,25 @@ class GoogleAnalyticsReportServiceTest extends SapphireTest
         $reportRequest = $this->service->getReportRequest();
 
         $metrics = $reportRequest->getMetrics();
+        $dimensions = $reportRequest->getDimensions();
 
         $this->assertInstanceOf(Google_Service_AnalyticsReporting_ReportRequest::class, $reportRequest);
+        $this->assertTrue(is_array($metrics));
         $this->assertInstanceOf(Google_Service_AnalyticsReporting_Metric::class, $metrics[0]);
-        $this->assertContains('ga:pagePath', array_values($reportRequest->getDimensions()));
+        $this->assertTrue(is_array($dimensions));
+        $this->assertEquals('ga:pagePath', $dimensions[0]->getName());
         $this->assertInstanceOf(Google_Service_AnalyticsReporting_DimensionFilterClause::class, $reportRequest->getDimensionFilterClauses());
         $this->assertInstanceOf(Google_Service_AnalyticsReporting_DateRange::class, $reportRequest->getDateRanges());
         $this->assertEquals(static::VIEWID, $reportRequest->getViewId());
+    }
+
+    public function testGetDimension()
+    {
+        $dimensions = $this->service->getDimensions();
+        $this->assertTrue(is_array($dimensions));
+        foreach ($dimensions as $dimension) {
+            $this->assertEquals('ga:pagePath', $dimension->getName());
+        }
     }
 
     /**

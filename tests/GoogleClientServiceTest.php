@@ -2,6 +2,9 @@
 
 class GoogleClientServiceTest extends SapphireTest
 {
+    /**
+     * Validate it's constructed
+     */
     public function testCreation()
     {
         $client = new GoogleClientService();

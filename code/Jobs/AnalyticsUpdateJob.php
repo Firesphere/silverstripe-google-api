@@ -39,6 +39,7 @@ if (class_exists('AbstractQueuedJob')) {
          * Boot up the process
          * @throws \Google_Exception
          * @throws \LogicException
+         * @throws \ValidationException
          */
         public function process()
         {
