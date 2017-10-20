@@ -184,7 +184,15 @@ class GoogleAnalyticsReportServiceTest extends SapphireTest
 
     public function testUpdateVisits()
     {
-        $result = $this->service->updateVisits([]);
+        $result = $this->service->updateVisits([new AnalyticsResponseHomePageMock()]);
+        $this->assertEquals(1, $result);
+        $page = Page::get()->filter(['URLSegment' => 'home'])->first();
+        $this->assertEquals(45477, $page->VisitCount);
+    }
+    public function testUpdateNoVisits()
+    {
+        $result = $this->service->updateVisits([new AnalyticsResponseNoPageMock()]);
         $this->assertEquals(0, $result);
+        $this->assertFalse($this->service->batched);
     }
 }

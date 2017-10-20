@@ -204,8 +204,8 @@ class GoogleAnalyticsReportService
                 $nowDate = date('Y-m-d');
                 $whitelistpages = $class::get()
                     // This needs to be a where because of `IS NULL`
-                    ->where("(`$class`.`LastAnalyticsUpdate` < $nowDate)
-                        OR (`$class`.`LastAnalyticsUpdate` IS NULL)");
+                    ->where("(`Page`.`LastAnalyticsUpdate` < $nowDate)
+                        OR (`Page`.`LastAnalyticsUpdate` IS NULL)");
                 $ids = array_merge($ids, $whitelistpages->column('ID'));
             }
             $pages = $pages->filter(['ID' => $ids]);
