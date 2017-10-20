@@ -7,8 +7,8 @@
 ## Google API
 The Google API V4 is pretty powerful and supports many different calls to different applications.
 
-This module in start attempts to get the pageviews for the different pages and store this count in the database,
-for sorting by popularity purposes.
+The initial use case implemented in this module is, to get the page views for the a set of pages in a given time period and store this count in the database, so that you can sort pages by popularity.
+There are many features of the google api, that could be included in future updates or extensions of this module.
 
 Further functionality is possible with the given API
 
@@ -53,3 +53,55 @@ With multiple filters, it seems Google limits to only the first 20 filters.
 If you have multiple filters, you need to set up the batch functionality. By default, the CronTask will do this for you.
 
 The crontask currently does _not_ support scheduling, but will probably do so in the future.
+
+Filters are what Google calls "DimensionFilters", which are contained in a "DimensionFilterClause". A filter, at this stage, is a specific page URL.
+
+More on [DimensionFilterClauses and DimensionFilters can be found in the Google Documentation](https://developers.google.com/analytics/devguides/reporting/core/v4/rest/v4/reports/batchGet#DimensionFilterClause).
+
+## Did you say Ninja Unicorns?
+
+```
+                                                    /
+                                                  .7
+                                       \       , //
+                                       |\.--._/|//
+                                      /\ ) ) ).'/
+                                     /(  \  // /
+                                    /(   J`((_/ \
+                                   / ) | _\     /
+                                  /|)  \  eJ    L
+                                 |  \ L \   L   L
+                                /  \  J  `. J   L
+                                |  )   L   \/   \
+                               /  \    J   (\   /
+             _....___         |  \      \   \```
+      ,.._.-'        '''--...-||\     -. \   \
+    .'.=.'                    `         `.\ [ Y
+   /   /                                  \]  J
+  Y / Y                                    Y   L
+  | | |          \                         |   L
+  | | |           Y                        A  J
+  |   I           |                       /I\ /
+  |    \          I             \        ( |]/|
+  J     \         /._           /        -tI/ |
+   L     )       /   /'-------'J           `'-:.
+   J   .'      ,'  ,' ,     \   `'-.__          \
+    \ T      ,'  ,'   )\    /|        ';'---7   /
+     \|    ,'L  Y...-' / _.' /         \   /   /
+      J   Y  |  J    .'-'   /         ,--.(   /
+       L  |  J   L -'     .'         /  |    /\
+       |  J.  L  J     .-;.-/       |    \ .' /
+       J   L`-J   L____,.-'`        |  _.-'   |
+        L  J   L  J                  ``  J    |
+        J   L  |   L                     J    |
+         L  J  L    \                    L    \
+         |   L  ) _.'\                    ) _.'\
+         L    \('`    \                  ('`    \
+          ) _.'\`-....'                   `-....'
+         ('`    \
+          `-.___/ 
+```
+
+## License
+
+BSD-3 clause
