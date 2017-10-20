@@ -33,7 +33,6 @@ jobs:
 
       - run: composer create-project silverstripe/installer:^3 ~/var/www -n
       - run: composer require firesphere/google-api:dev-master -n
-      - run: cat composer.lock #temporary, to get a lockfile ready to go
       - run: rm phpunit.xml.dist
       - run: cp google-api/phpunit.xml.dist .
       - run: cp google-api/_ss_env_example _ss_environment.php
