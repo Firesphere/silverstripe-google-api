@@ -14,6 +14,11 @@ if (class_exists('AbstractQueuedJob')) {
         protected $service;
 
         /**
+         * @var PageUpdateService
+         */
+        protected $updateService;
+
+        /**
          * AnalyticsUpdateJob constructor.
          * @param array $params
          */
@@ -56,11 +61,11 @@ if (class_exists('AbstractQueuedJob')) {
             $reports = $this->service->getReport();
             $count = 0;
 
-            $updateService = new PageUpdateService();
+            $this->updateService = new PageUpdateService();
             foreach ($reports as $report) {
                 /** @var array $rows */
                 $rows = $report->getData()->getRows();
-                $count += $updateService->updateVisits($rows);
+                $count += $this->updateService->updateVisits($rows);
             }
             $this->addMessage("$count Pages updated with Google Analytics visit count");
         }
@@ -70,7 +75,7 @@ if (class_exists('AbstractQueuedJob')) {
          */
         public function afterComplete()
         {
-            if ($this->service->batched) {
+            if ($this->service->batched && $this->updateService->batched) {
                 /** @var AnalyticsUpdateJob $nextJob */
                 $nextJob = Injector::inst()->get('AnalyticsUpdateJob');
                 $nextJob->setJobData(1, 0, false, new stdClass(), ['Batched data from Google']);

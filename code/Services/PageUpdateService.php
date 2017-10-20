@@ -7,6 +7,11 @@ class PageUpdateService
 {
 
     /**
+     * @var bool
+     */
+    public $batched = true;
+
+    /**
      * @param array $rows
      * @return int
      * @throws \ValidationException
@@ -28,7 +33,7 @@ class PageUpdateService
         }
         // If we're not getting any results back, we're out of data from Google.
         // Stop the batching process.
-        if ($count === 0) {
+        if ($count === 0 || $count > 20) {
             $this->batched = false;
         }
         return $count;
