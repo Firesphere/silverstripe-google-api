@@ -160,7 +160,9 @@ class GoogleAnalyticsReportService
                 $page = '/';
                 $operator = 'EXACT';
             }
+
             $filters = $this->createFilter($operator, $page, $filters);
+            // Reset the operator
             if ($operator === 'EXACT') {
                 $operator = 'ENDS_WITH';
             }
@@ -191,24 +193,10 @@ class GoogleAnalyticsReportService
         /** @var DataList|Page[] $pages */
         $pages = SiteTree::get();
         if ($blacklist) {
-            $ids = [];
-            foreach ($blacklist as $class) {
-                $blacklistpages = $class::get();
-                $ids = array_merge($ids, $blacklistpages->column('ID'));
-            }
-            $pages = $pages->exclude(['ID' => $ids]);
+            $pages = $this->getBlacklist($blacklist, $pages);
         }
         if ($whitelist) {
-            $ids = [];
-            foreach ($whitelist as $class) {
-                $nowDate = date('Y-m-d');
-                $whitelistpages = $class::get()
-                    // This needs to be a where because of `IS NULL`
-                    ->where("(`Page`.`LastAnalyticsUpdate` < $nowDate)
-                        OR (`Page`.`LastAnalyticsUpdate` IS NULL)");
-                $ids = array_merge($ids, $whitelistpages->column('ID'));
-            }
-            $pages = $pages->filter(['ID' => $ids]);
+            $pages = $this->getWhitelistPages($whitelist, $pages);
         }
 
         if ($pages->count() > 20) {
@@ -217,6 +205,44 @@ class GoogleAnalyticsReportService
 
         // Google limits to 20 reports per complex filter setup
         return $pages->limit(20)->column('URLSegment');
+    }
+
+    /**
+     * @param array $blacklist
+     * @param DataList $pages
+     * @return DataList
+     */
+    protected function getBlacklist($blacklist, $pages)
+    {
+        $ids = [];
+        foreach ($blacklist as $class) {
+            $blacklistpages = $class::get();
+            $ids = array_merge($ids, $blacklistpages->column('ID'));
+        }
+        $pages = $pages->exclude(['ID' => $ids]);
+
+        return $pages;
+    }
+
+    /**
+     * @param array $whitelist
+     * @param DataList $pages
+     * @return DataList
+     */
+    protected function getWhitelistPages($whitelist, $pages)
+    {
+        $ids = [];
+        foreach ($whitelist as $class) {
+            $nowDate = date('Y-m-d');
+            $whitelistpages = $class::get()
+                // This needs to be a where because of `IS NULL`
+                ->where("(`Page`.`LastAnalyticsUpdate` < $nowDate)
+                        OR (`Page`.`LastAnalyticsUpdate` IS NULL)");
+            $ids = array_merge($ids, $whitelistpages->column('ID'));
+        }
+        $pages = $pages->filter(['ID' => $ids]);
+
+        return $pages;
     }
 
     /**
@@ -235,6 +261,34 @@ class GoogleAnalyticsReportService
         $filters[] = $filter;
 
         return $filters;
+    }
+
+    /**
+     * @param array $rows
+     * @return int
+     * @throws \ValidationException
+     */
+    public function updateVisits($rows)
+    {
+        $count = 0;
+        foreach ($rows as $row) {
+            $metrics = $row->getMetrics();
+            $values = $metrics[0]->getValues();
+            $dimensions = $row->getDimensions();
+            $dimensions = explode('/', $dimensions[0]);
+            $page = $this->findPage($dimensions);
+            // Only write if a page is found
+            if ($page) {
+                $count++;
+                $this->updatePageVisit($page, $values);
+            }
+        }
+        // If we're not getting any results back, we're out of data from Google.
+        // Stop the batching process.
+        if ($count === 0) {
+            $this->batched = false;
+        }
+        return $count;
     }
 
     /**
@@ -269,38 +323,19 @@ class GoogleAnalyticsReportService
     }
 
     /**
-     * @param array $rows
-     * @return int
-     * @throws \ValidationException
+     * @param Page $page
+     * @param array $values
      */
-    public function updateVisits($rows)
+    protected function updatePageVisit($page, $values)
     {
-        $count = 0;
-        foreach ($rows as $row) {
-            $metrics = $row->getMetrics();
-            $values = $metrics[0]->getValues();
-            $dimensions = $row->getDimensions();
-            $dimensions = explode('/', $dimensions[0]);
-            $page = $this->findPage($dimensions);
-            // Only write if a page is found
-            if ($page) {
-                $count++;
-                $rePublish = $page->isPublished();
-                $page->VisitCount = $values[0];
-                $page->LastAnalyticsUpdate = date('Y-m-d');
-                $page->write();
-                // If the page was published before write, republish or the change won't be applied
-                if ($rePublish) {
-                    $page->publish('Stage', 'Live');
-                }
-                $page->destroy();
-            }
+        $rePublish = $page->isPublished();
+        $page->VisitCount = $values[0];
+        $page->LastAnalyticsUpdate = date('Y-m-d');
+        $page->write();
+        // If the page was published before write, republish or the change won't be applied
+        if ($rePublish) {
+            $page->publish('Stage', 'Live');
         }
-        // If we're not getting any results back, we're out of data from Google.
-        // Stop the batching process.
-        if ($count === 0) {
-            $this->batched = false;
-        }
-        return $count;
+        $page->destroy();
     }
 }
