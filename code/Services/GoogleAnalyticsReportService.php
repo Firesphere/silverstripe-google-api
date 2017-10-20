@@ -49,9 +49,22 @@ class GoogleAnalyticsReportService
     }
 
     /**
-     * @return mixed
+     * @return Google_Service_AnalyticsReporting_GetReportsResponse
      */
     public function getReport()
+    {
+        $request = $this->getReportRequest();
+
+        $body = new Google_Service_AnalyticsReporting_GetReportsRequest();
+        $body->setReportRequests([$request]);
+
+        return $this->analytics->reports->batchGet($body);
+    }
+
+    /**
+     * @return Google_Service_AnalyticsReporting_ReportRequest
+     */
+    public function getReportRequest()
     {
         $config = SiteConfig::current_site_config();
 
@@ -60,11 +73,9 @@ class GoogleAnalyticsReportService
         $request->setViewId($config->Viewid);
         $request->setDimensionFilterClauses($this->getDimensionFilterClauses());
         $request->setDateRanges($this->getDateRange());
+        $request->setMetrics([$this->getMetrics()]);
 
-        $body = new Google_Service_AnalyticsReporting_GetReportsRequest();
-        $body->setReportRequests([$request]);
-
-        return $this->analytics->reports->batchGet($body);
+        return $request;
     }
 
     /**

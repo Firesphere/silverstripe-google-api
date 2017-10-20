@@ -7,6 +7,8 @@
  */
 class GoogleAnalyticsReportServiceTest extends SapphireTest
 {
+    const VIEWID = 12345;
+
     /**
      * @var GoogleClientService
      */
@@ -25,6 +27,9 @@ class GoogleAnalyticsReportServiceTest extends SapphireTest
         parent::setUp();
         $this->client = new GoogleClientService();
         $this->service = new GoogleAnalyticsReportService($this->client);
+        $siteConfig = SiteConfig::current_site_config();
+        $siteConfig->Viewid = static::VIEWID;
+        $siteConfig->write();
     }
 
     /**
@@ -65,6 +70,23 @@ class GoogleAnalyticsReportServiceTest extends SapphireTest
         $this->assertInstanceOf(Google_Service_AnalyticsReporting_DateRange::class, $dateRange);
 
         $this->assertEquals('60daysAgo', $dateRange->getStartDate());
+    }
+
+    /**
+     * Confirm the report request is correctly build
+     */
+    public function testGetReportRequest()
+    {
+        $reportRequest = $this->service->getReportRequest();
+
+        $metrics = $reportRequest->getMetrics();
+
+        $this->assertInstanceOf(Google_Service_AnalyticsReporting_ReportRequest::class, $reportRequest);
+        $this->assertInstanceOf(Google_Service_AnalyticsReporting_Metric::class, $metrics[0]);
+        $this->assertContains('ga:pagePath', array_values($reportRequest->getDimensions()));
+        $this->assertInstanceOf(Google_Service_AnalyticsReporting_DimensionFilterClause::class, $reportRequest->getDimensionFilterClauses());
+        $this->assertInstanceOf(Google_Service_AnalyticsReporting_DateRange::class, $reportRequest->getDateRanges());
+        $this->assertEquals(static::VIEWID, $reportRequest->getViewId());
     }
 
     /**
