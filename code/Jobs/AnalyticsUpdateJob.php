@@ -55,10 +55,12 @@ if (class_exists('AbstractQueuedJob')) {
             /** @var array $reports */
             $reports = $this->service->getReport();
             $count = 0;
+
+            $updateService = new PageUpdateService();
             foreach ($reports as $report) {
                 /** @var array $rows */
                 $rows = $report->getData()->getRows();
-                $count += $this->service->updateVisits($rows);
+                $count += $updateService->updateVisits($rows);
             }
             $this->addMessage("$count Pages updated with Google Analytics visit count");
         }

@@ -114,7 +114,7 @@ class GoogleAnalyticsReportServiceTest extends SapphireTest
         $this->assertTrue(is_array($filters));
         foreach ($filters as $filter) {
             $this->assertInstanceOf(Google_Service_AnalyticsReporting_DimensionFilter::class, $filter);
-            $this->assertEquals('ENDS_WITH', $filter->getOperator());
+            $this->assertTrue(in_array($filter->getOperator(), ['ENDS_WITH', 'EXACT'], true));
         }
     }
 
@@ -151,70 +151,8 @@ class GoogleAnalyticsReportServiceTest extends SapphireTest
         }
         $pages = $this->service->getPages();
         $this->assertTrue(is_array($pages));
-        $this->assertEquals(20, count($pages));
+        $this->assertCount(20, $pages);
         $this->assertTrue($this->service->batched);
-    }
-
-    /**
-     * Validate an array with two empty values finds the homepage
-     */
-    public function testFindHomePage()
-    {
-        $testArray = ['', ''];
-        $page = $this->service->findPage($testArray);
-        $this->assertInstanceOf(Page::class, $page);
-        $this->assertTrue('home', $page->URLSegment);
-    }
-
-    /**
-     * Validate we're traversing correctly down in to the child pages
-     */
-    public function testFindChildPage()
-    {
-        /** @var Page $homePage */
-        $homePage = Page::get()->filter(['URLSegment' => 'home'])->first();
-        /** @var Page $homePage */
-        $child = Page::create(['Title' => 'Test Page', 'ParentID' => $homePage->ID]);
-        $child->write();
-        $child->doPublish();
-        $testArray = ['', '', 'test-page'];
-        $page = $this->service->findPage($testArray);
-        $this->assertInstanceOf(Page::class, $page);
-        $this->assertEquals('/home/test-page/', $page->Link());
-    }
-
-    /**
-     * Make sure the get params are ignored
-     */
-    public function testFindChildPageWithQuery()
-    {
-        /** @var Page $homePage */
-        $homePage = Page::get()->filter(['URLSegment' => 'home'])->first();
-        /** @var Page $homePage */
-        $child = Page::create(['Title' => 'Test Page', 'ParentID' => $homePage->ID]);
-        $child->write();
-        $child->doPublish();
-        $testArray = ['', '', 'test-page', '?stage=Stage'];
-        $page = $this->service->findPage($testArray);
-        $this->assertInstanceOf(Page::class, $page);
-        $this->assertEquals('/home/test-page/', $page->Link());
-    }
-
-    /**
-     * Make sure an empty last value is skipped
-     */
-    public function testFindPageWithEmptyLast()
-    {
-        /** @var Page $homePage */
-        $homePage = Page::get()->filter(['URLSegment' => 'home'])->first();
-        /** @var Page $homePage */
-        $child = Page::create(['Title' => 'Test Page', 'ParentID' => $homePage->ID]);
-        $child->write();
-        $child->doPublish();
-        $testArray = ['', '', 'test-page', ''];
-        $page = $this->service->findPage($testArray);
-        $this->assertInstanceOf(Page::class, $page);
-        $this->assertEquals('/home/test-page/', $page->Link());
     }
 
     /**
@@ -240,26 +178,5 @@ class GoogleAnalyticsReportServiceTest extends SapphireTest
         $this->assertEquals(20, count($pages));
         // Error Pages are children of Page, so they should be included
         $this->assertContains('page-not-found', $pages);
-    }
-
-    /**
-     * Validate updating the pages works
-     */
-    public function testUpdateVisits()
-    {
-        $result = $this->service->updateVisits([new AnalyticsResponseHomePageMock()]);
-        $this->assertEquals(1, $result);
-        $page = Page::get()->filter(['URLSegment' => 'home'])->first();
-        $this->assertEquals(45477, $page->VisitCount);
-    }
-
-    /**
-     * Validate that if no pages is found, nothing is done.
-     */
-    public function testUpdateNoVisits()
-    {
-        $result = $this->service->updateVisits([new AnalyticsResponseNoPageMock()]);
-        $this->assertEquals(0, $result);
-        $this->assertFalse($this->service->batched);
     }
 }
