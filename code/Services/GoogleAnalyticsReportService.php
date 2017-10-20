@@ -296,7 +296,11 @@ class GoogleAnalyticsReportService
                 $page->destroy();
             }
         }
-
+        // If we're not getting any results back, we're out of data from Google.
+        // Stop the batching process.
+        if ($count === 0) {
+            $this->batched = false;
+        }
         return $count;
     }
 }
