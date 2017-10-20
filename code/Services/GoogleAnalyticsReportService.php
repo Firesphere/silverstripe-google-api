@@ -131,6 +131,11 @@ class GoogleAnalyticsReportService
         $this->metrics = $metric;
     }
 
+    /**
+     * Set up the Dimension Filters
+     *
+     * @return array|Google_Service_AnalyticsReporting_DimensionFilter[]
+     */
     public function getDimensionFilters()
     {
         $filters = [];
@@ -146,6 +151,9 @@ class GoogleAnalyticsReportService
         return $this->getPageDimensionFilters();
     }
 
+    /**
+     * @return array|Google_Service_AnalyticsReporting_DimensionFilter[]
+     */
     public function getPageDimensionFilters()
     {
         $filters = [];
@@ -171,6 +179,9 @@ class GoogleAnalyticsReportService
         return $filters;
     }
 
+    /**
+     * @return Google_Service_AnalyticsReporting_DimensionFilterClause
+     */
     public function getDimensionFilterClauses()
     {
         $dimensionFilters = $this->getDimensionFilters();
@@ -249,7 +260,7 @@ class GoogleAnalyticsReportService
      * @param $operator
      * @param $page
      * @param $filters
-     * @return array
+     * @return array|Google_Service_AnalyticsReporting_DimensionFilter[]
      */
     protected function createFilter($operator, $page, $filters)
     {
@@ -310,13 +321,26 @@ class GoogleAnalyticsReportService
         $page = Page::get()->filter(['URLSegment' => $firstItem])->first();
         // If there are items left in the dimensions, continue traversing down
         if (count($dimensions) && $page) {
-            foreach ($dimensions as $segment) {
-                if (strpos($segment, '?') === 0 || !$page || !$segment) {
-                    continue;
-                }
-                $children = $page->AllChildren();
-                $page = $children->filter(['URLSegment' => $segment])->first();
+            $page = $this->findPageChildren($dimensions, $page);
+        }
+
+        return $page;
+    }
+
+    /**
+     * @param array $dimensions
+     * @param Page $page
+     * @return mixed
+     */
+    protected function findPageChildren($dimensions, $page)
+    {
+        foreach ($dimensions as $segment) {
+            if (strpos($segment, '?') === 0 || !$page || !$segment) {
+                continue;
             }
+            /** @var DataList|Page[] $children */
+            $children = $page->AllChildren();
+            $page = $children->filter(['URLSegment' => $segment])->first();
         }
 
         return $page;
@@ -325,6 +349,7 @@ class GoogleAnalyticsReportService
     /**
      * @param Page $page
      * @param array $values
+     * @throws \ValidationException
      */
     protected function updatePageVisit($page, $values)
     {

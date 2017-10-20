@@ -2,7 +2,6 @@
 
 class AnalyticsResponseNoPageMock extends Google_Service_AnalyticsReporting_ReportRow
 {
-
     public $response;
 
     public function getDimensions()
