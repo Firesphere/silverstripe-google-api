@@ -1,10 +1,17 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: simon
- * Date: 20-Oct-17
- * Time: 15:04
- */
+
+namespace Firesphere\GoogleAPI\Tests;
+
+use Firesphere\GoogleAPI\Services\PageUpdateService;
+use Firesphere\GoogleAPI\Tests\Mock\AnalyticsResponseHomePageMock;
+use Firesphere\GoogleAPI\Tests\Mock\AnalyticsResponseNoPageMock;
+use Page;
+use SilverStripe\Core\Injector\Injector;
+use SilverStripe\Dev\SapphireTest;
+use SilverStripe\Security\DefaultAdminService;
+use SilverStripe\Security\IdentityStore;
+use SilverStripe\Security\Member;
+use SilverStripe\Security\Security;
 
 class PageUpdateServiceTest extends SapphireTest
 {
@@ -17,6 +24,11 @@ class PageUpdateServiceTest extends SapphireTest
     public function setUp()
     {
         $this->service = new PageUpdateService();
+        /** @var DefaultAdminService $adminService */
+        $adminService = DefaultAdminService::create();
+        /** @var Member $admin */
+        $admin = $adminService->findOrCreateDefaultAdmin();
+        Security::setCurrentUser($admin);
         parent::setUp();
     }
     
@@ -41,7 +53,7 @@ class PageUpdateServiceTest extends SapphireTest
         /** @var Page $homePage */
         $child = Page::create(['Title' => 'Test Page', 'ParentID' => $homePage->ID]);
         $child->write();
-        $child->doPublish();
+        $child->publishRecursive();
         $testArray = ['', '', 'test-page'];
         $page = $this->service->findPage($testArray);
         $this->assertInstanceOf(Page::class, $page);
@@ -58,7 +70,7 @@ class PageUpdateServiceTest extends SapphireTest
         /** @var Page $homePage */
         $child = Page::create(['Title' => 'Test Page', 'ParentID' => $homePage->ID]);
         $child->write();
-        $child->doPublish();
+        $child->publishRecursive();
         $testArray = ['', '', 'test-page', '?stage=Stage'];
         $page = $this->service->findPage($testArray);
         $this->assertInstanceOf(Page::class, $page);
@@ -75,7 +87,7 @@ class PageUpdateServiceTest extends SapphireTest
         /** @var Page $homePage */
         $child = Page::create(['Title' => 'Test Page', 'ParentID' => $homePage->ID]);
         $child->write();
-        $child->doPublish();
+        $child->publishRecursive();
         $testArray = ['', '', 'test-page', ''];
         $page = $this->service->findPage($testArray);
         $this->assertInstanceOf(Page::class, $page);

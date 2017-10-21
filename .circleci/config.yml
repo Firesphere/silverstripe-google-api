@@ -7,6 +7,16 @@ jobs:
   build:
     docker:
       - image: brettt89/silverstripe-web
+        environment:
+          - SS_DATABASE_CLASS=MySQLPDODatabase
+          - SS_DATABASE_SERVER=127.0.0.1
+          - SS_DATABASE_USERNAME=root
+          - SS_DATABASE_PASSWORD=ubuntu
+          - SS_DATABASE_NAME=circle_test
+          - SS_ENVIRONMENT_TYPE=dev
+          - SS_ANALYTICS_KEY=google-api/tests/fixtures/test.json
+          - SS_DEFAULT_ADMIN_USERNAME="admin"
+          - SS_DEFAULT_ADMIN_PASSWORD="password"
       - image: circleci/mysql:5.7
         environment:
           - MYSQL_USER=root
@@ -15,12 +25,6 @@ jobs:
           - MYSQL_HOST=127.0.0.1
 
     working_directory: ~/var/www
-
-    branches:
-      only:
-        - master
-        - develop
-        - /feature.*/
 
     steps:
       # Install additional requirements
@@ -31,12 +35,12 @@ jobs:
             php composer-setup.php --install-dir=/usr/local/bin --filename=composer
             php -r "unlink('composer-setup.php');"
 
-      - run: composer create-project silverstripe/installer:^3 ~/var/www -n
-      - run: composer require firesphere/google-api:dev-master -n
+      - run: composer create-project silverstripe/installer:4.x-dev ~/var/www -n
+      - run: composer require firesphere/google-api:4.x-dev -n
+      - run: composer require scriptfusion/phpunit-immediate-exception-printer:^1
       - run: rm phpunit.xml.dist
       - run: cp google-api/phpunit.xml.dist .
-      - run: cp google-api/tests/fixtures/_ss_env_example _ss_environment.php
-      - run: framework/sake dev/build
+      - run: vendor/silverstripe/framework/sake dev/build
 
       # run tests!
       - run: vendor/bin/phpunit -d memory_limit=512M --coverage-clover=coverage.xml google-api/tests

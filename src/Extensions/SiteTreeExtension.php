@@ -1,13 +1,19 @@
 <?php
 
+namespace Firesphere\GoogleAPI\Extensions;
+
+use SilverStripe\Forms\FieldList;
+use SilverStripe\Forms\ReadonlyField;
+use SilverStripe\ORM\DataExtension;
+
 /**
  * Class PageExtension
  *
- * @property Page|GoogleAPIPageExtension $owner
+ * @property \SilverStripe\CMS\Model\SiteTree|\Firesphere\GoogleAPI\Extensions\SiteTreeExtension $owner
  * @property int $VisitCount
  * @property string $LastAnalyticsUpdate
  */
-class GoogleAPIPageExtension extends DataExtension
+class SiteTreeExtension extends DataExtension
 {
     private static $db = [
         'VisitCount'          => 'Int',

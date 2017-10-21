@@ -1,5 +1,22 @@
 <?php
 
+namespace Firesphere\GoogleAPI\Services;
+
+use Google_Service_AnalyticsReporting;
+use Google_Service_AnalyticsReporting_DateRange;
+use Google_Service_AnalyticsReporting_Dimension;
+use Google_Service_AnalyticsReporting_DimensionFilter;
+use Google_Service_AnalyticsReporting_DimensionFilterClause;
+use Google_Service_AnalyticsReporting_GetReportsRequest;
+use Google_Service_AnalyticsReporting_GetReportsResponse;
+use Google_Service_AnalyticsReporting_Metric;
+use Google_Service_AnalyticsReporting_ReportRequest;
+use Page;
+use SilverStripe\CMS\Model\SiteTree;
+use SilverStripe\Core\Config\Config;
+use SilverStripe\ORM\DataList;
+use SilverStripe\SiteConfig\SiteConfig;
+
 /**
  * Class GoogleAnalyticsReportService
  *
@@ -80,7 +97,7 @@ class GoogleAnalyticsReportService
 
     /**
      * Yes, thanks to Google's naming, we're doubling up the get here
-     * 
+     *
      * @param $request
      * @return Google_Service_AnalyticsReporting_GetReportsRequest
      */
@@ -92,6 +109,9 @@ class GoogleAnalyticsReportService
         return $body;
     }
 
+    /**
+     * @return array|Google_Service_AnalyticsReporting_Dimension[]
+     */
     public function getDimensions()
     {
         $dimension = new Google_Service_AnalyticsReporting_Dimension();
@@ -285,8 +305,8 @@ class GoogleAnalyticsReportService
             $nowDate = date('Y-m-d');
             $whitelistpages = $class::get()
                 // This needs to be a where because of `IS NULL`
-                ->where("(`Page`.`LastAnalyticsUpdate` < $nowDate)
-                        OR (`Page`.`LastAnalyticsUpdate` IS NULL)");
+                ->where("(`SiteTree`.`LastAnalyticsUpdate` < $nowDate)
+                        OR (`SiteTree`.`LastAnalyticsUpdate` IS NULL)");
             $ids = array_merge($ids, $whitelistpages->column('ID'));
         }
         $pages = $pages->filter(['ID' => $ids]);

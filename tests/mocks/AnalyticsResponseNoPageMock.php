@@ -1,5 +1,10 @@
 <?php
 
+namespace Firesphere\GoogleAPI\Tests\Mock;
+
+use Google_Service_AnalyticsReporting_DateRangeValues;
+use Google_Service_AnalyticsReporting_ReportRow;
+
 class AnalyticsResponseNoPageMock extends Google_Service_AnalyticsReporting_ReportRow
 {
     public $response;

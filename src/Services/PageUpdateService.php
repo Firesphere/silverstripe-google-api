@@ -1,5 +1,11 @@
 <?php
 
+namespace Firesphere\GoogleAPI\Services;
+
+use Page;
+use SilverStripe\ORM\DataList;
+use SilverStripe\ORM\ValidationException;
+
 /**
  * Class PageUpdateService is used to update the count on pages
  */
@@ -14,7 +20,7 @@ class PageUpdateService
     /**
      * @param array $rows
      * @return int
-     * @throws \ValidationException
+     * @throws ValidationException
      */
     public function updateVisits($rows)
     {
@@ -86,7 +92,7 @@ class PageUpdateService
     /**
      * @param Page $page
      * @param array $values
-     * @throws \ValidationException
+     * @throws ValidationException
      */
     protected function updatePageVisit($page, $values)
     {
@@ -96,7 +102,7 @@ class PageUpdateService
         $page->write();
         // If the page was published before write, republish or the change won't be applied
         if ($rePublish) {
-            $page->publish('Stage', 'Live');
+            $page->copyVersionToStage('Stage', 'Live');
         }
         $page->destroy();
     }

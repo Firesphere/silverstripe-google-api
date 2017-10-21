@@ -1,5 +1,27 @@
 <?php
 
+namespace Firesphere\GoogleAPI\Tests;
+
+use Firesphere\GoogleAPI\Services\GoogleAnalyticsReportService;
+use Firesphere\GoogleAPI\Services\GoogleClientService;
+use Google_Service_AnalyticsReporting;
+use Google_Service_AnalyticsReporting_DateRange;
+use Google_Service_AnalyticsReporting_Dimension;
+use Google_Service_AnalyticsReporting_DimensionFilter;
+use Google_Service_AnalyticsReporting_DimensionFilterClause;
+use Google_Service_AnalyticsReporting_GetReportsRequest;
+use Google_Service_AnalyticsReporting_Metric;
+use Google_Service_AnalyticsReporting_ReportRequest;
+use Page;
+use SilverStripe\Core\Config\Config;
+use SilverStripe\Core\Environment;
+use SilverStripe\Dev\SapphireTest;
+use SilverStripe\ErrorPage\ErrorPage;
+use SilverStripe\Security\DefaultAdminService;
+use SilverStripe\Security\Member;
+use SilverStripe\Security\Security;
+use SilverStripe\SiteConfig\SiteConfig;
+
 /**
  * Class GoogleAnalyticsReportServiceTest
  *
@@ -25,14 +47,20 @@ class GoogleAnalyticsReportServiceTest extends SapphireTest
     public function setUp()
     {
         parent::setUp();
-        if (!defined('SS_ANALYTICS_KEY')) {
-            define('SS_ANALYTICS_KEY', 'google-api/tests/fixtures/test.json');
+        if (!Environment::getEnv('SS_ANALYTICS_KEY')) {
+            Environment::setEnv('SS_ANALYTICS_KEY', 'google-api/tests/fixtures/test.json');
         }
+
         $this->client = new GoogleClientService();
         $this->service = new GoogleAnalyticsReportService($this->client);
         $siteConfig = SiteConfig::current_site_config();
         $siteConfig->Viewid = static::VIEWID;
         $siteConfig->write();
+        /** @var DefaultAdminService $adminService */
+        $adminService = DefaultAdminService::create();
+        /** @var Member $admin */
+        $admin = $adminService->findOrCreateDefaultAdmin();
+        Security::setCurrentUser($admin);
     }
 
     /**
@@ -199,7 +227,7 @@ class GoogleAnalyticsReportServiceTest extends SapphireTest
             /** @var Page` $page */
             $page = Page::create(['Title' => $i . ' test']);
             $page->write();
-            $page->doPublish();
+            $page->publishRecursive();
         }
         $pages = $this->service->getPages();
         $this->assertTrue(is_array($pages));

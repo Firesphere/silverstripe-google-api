@@ -23,9 +23,9 @@ And run a `dev/build`
 First, you will have to set up a Google API application, that is connected to Google Analytics.
 How to set that up is detailed [In the Google Documentation](https://developers.google.com/analytics/devguides/reporting/core/v4/quickstart/web-php).
 
-Put the downloaded json in the document root (Better solution to be done). And add a key for it to your `_ss_environment` file:
-```php
-define('SS_ANALYTICS_KEY', 'name-of-my-file');
+Put the downloaded json in the document root (Better solution to be done). And add a key for it to your `.env` file:
+```dotenv
+SS_ANALYTICS_KEY=name-of-my-file
 ```
 
 Currently, the OAuth2 integration is not built yet, so for now, add the email address from the downloaded json (key: client_email)

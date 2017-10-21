@@ -19,16 +19,31 @@
     }
   ],
   "require": {
-    "silverstripe/framework": "^3.2",
-    "silverstripe/cms": "^3.2",
+    "php": ">=5.6.0",
+    "silverstripe/recipe-plugin": ">=0.1@dev <1.0",
+    "silverstripe/recipe-cms": "1.1.x-dev",
     "google/apiclient": "^2.0"
+  },
+  "require-dev": {
+    "scriptfusion/phpunit-immediate-exception-printer": "^1"
   },
   "extra": {
     "installer-name": "google-api",
     "branch-alias": {
-      "1.x-dev": "1.0.x-dev",
-      "dev-master": "1.x-dev"
+      "2.x-dev": "2.0.x-dev",
+      "dev-4.x": "2.x-dev"
     }
   },
-  "target-dir": "google-api"
+  "autoload": {
+    "psr-4": {
+      "Firesphere\\GoogleAPI\\Extensions\\": "src/Extensions",
+      "Firesphere\\GoogleAPI\\Jobs\\": "src/Jobs",
+      "Firesphere\\GoogleAPI\\Services\\": "src/Services",
+      "Firesphere\\GoogleAPI\\Tasks\\": "src/Tasks",
+      "Firesphere\\GoogleAPI\\Tests\\": "tests/",
+      "Firesphere\\GoogleAPI\\Tests\\Mock\\": "tests/mocks"
+    }
+  },
+  "prefer-stable": true,
+  "minimum-stability": "dev"
 }

@@ -1,5 +1,18 @@
 <?php
 
+namespace Firesphere\GoogleAPI\Jobs;
+
+use Firesphere\GoogleAPI\Services\GoogleAnalyticsReportService;
+use Firesphere\GoogleAPI\Services\GoogleClientService;
+use Firesphere\GoogleAPI\Services\PageUpdateService;
+use Google_Exception;
+use Psr\Container\NotFoundExceptionInterface;
+use SilverStripe\Core\Injector\Injector;
+use stdClass;
+use SilverStripe\ORM\ValidationException;
+use Symbiote\QueuedJobs\Services\AbstractQueuedJob;
+use Symbiote\QueuedJobs\Services\QueuedJobService;
+
 if (class_exists('AbstractQueuedJob')) {
     /**
      * Class AnalyticsUpdateJob
@@ -37,22 +50,24 @@ if (class_exists('AbstractQueuedJob')) {
 
         /**
          * Boot up the process
-         * @throws \Google_Exception
+         * @throws Google_Exception
          * @throws \LogicException
-         * @throws \ValidationException
+         * @throws ValidationException
          */
         public function process()
         {
             $clientService = new GoogleClientService();
 
             $this->getReport($clientService);
+
+            $this->isComplete = true;
         }
 
         /**
          * Execute the whole part
          *
          * @param GoogleClientService $client
-         * @throws \ValidationException
+         * @throws ValidationException
          */
         protected function getReport($client)
         {
@@ -73,6 +88,7 @@ if (class_exists('AbstractQueuedJob')) {
 
         /**
          * If needed, queue itself with
+         * @throws NotFoundExceptionInterface
          */
         public function afterComplete()
         {

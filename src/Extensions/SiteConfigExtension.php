@@ -1,15 +1,21 @@
 <?php
 
+namespace Firesphere\GoogleAPI\Extensions;
+
+use SilverStripe\Forms\DropdownField;
+use SilverStripe\Forms\FieldList;
+use SilverStripe\Forms\TextField;
+use SilverStripe\ORM\DataExtension;
 
 /**
  * Class GoogleAPISiteConfigExtension
  *
- * @property SiteConfig|GoogleAPISiteConfigExtension $owner
+ * @property \SilverStripe\SiteConfig\SiteConfig|\Firesphere\GoogleAPI\Extensions\SiteConfigExtension $owner
  * @property string $Viewid
  * @property string $DateRange
  * @property string $Metric
  */
-class GoogleAPISiteConfigExtension extends DataExtension
+class SiteConfigExtension extends DataExtension
 {
     private static $db = [
         'Viewid'    => 'Varchar(50)',

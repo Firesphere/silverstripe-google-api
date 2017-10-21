@@ -1,6 +1,6 @@
 fixes:
-  - "google-api/code::code"
+  - "google-api/src::src"
 ignore: # Ignoring irrelevant code. Default SS stuff should not be called out by Codecoverage
-  - "code/Extensions"
-  - "code/Jobs"
-  - "code/Tasks"
+  - "src/Extensions"
+  - "src/Jobs"
+  - "src/Tasks"

@@ -8,4 +8,4 @@ build:
         override: [php-scrutinizer-run]
 
 filter:
-  paths: ["code/*", "tests/*"]
+  paths: ["src/*", "tests/*"]

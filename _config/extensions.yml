@@ -1,6 +1,6 @@
-SiteConfig:
+SilverStripe\SiteConfig\SiteConfig:
   extensions:
-    - GoogleAPISiteConfigExtension
-Page:
+    - Firesphere\GoogleAPI\Extensions\SiteConfigExtension
+SilverStripe\CMS\Model\SiteTree:
   extensions:
-    - GoogleAPIPageExtension
+    - Firesphere\GoogleAPI\Extensions\SiteTreeExtension

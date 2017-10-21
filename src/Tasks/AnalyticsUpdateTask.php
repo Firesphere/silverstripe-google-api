@@ -1,5 +1,16 @@
 <?php
 
+namespace Firesphere\GoogleAPI\Tasks;
+
+use Firesphere\GoogleAPI\Services\GoogleAnalyticsReportService;
+use Firesphere\GoogleAPI\Services\GoogleClientService;
+use Firesphere\GoogleAPI\Services\PageUpdateService;
+use Google_Exception;
+use LogicException;
+use SilverStripe\Control\HTTPRequest;
+use SilverStripe\Dev\BuildTask;
+use SilverStripe\ORM\ValidationException;
+
 class AnalyticsUpdateTask extends BuildTask
 {
     /**
@@ -12,9 +23,10 @@ class AnalyticsUpdateTask extends BuildTask
 
     /**
      * Start booting up
-     * @param SS_HTTPRequest $request
-     * @throws \Google_Exception
-     * @throws \LogicException
+     * @param HTTPRequest $request
+     * @throws Google_Exception
+     * @throws LogicException
+     * @throws ValidationException
      */
     public function run($request)
     {
@@ -27,7 +39,7 @@ class AnalyticsUpdateTask extends BuildTask
      * Get the report and ask the service to update neatly
      *
      * @param GoogleClientService $client
-     * @throws \ValidationException
+     * @throws ValidationException
      */
     protected function getReport($client)
     {
