@@ -8,8 +8,6 @@ class GoogleClientServiceTest extends SapphireTest
      * @var bool
      */
     protected $runTestInSeparateProcess = true;
-    protected $preserveGlobalState = false;
-
 
     /**
      * @expectedException LogicException
