@@ -35,7 +35,7 @@ jobs:
       - run: composer require firesphere/google-api:dev-master -n
       - run: rm phpunit.xml.dist
       - run: cp google-api/phpunit.xml.dist .
-      - run: cp google-api/_ss_env_example _ss_environment.php
+      - run: cp google-api/tests/fixtures/_ss_env_example _ss_environment.php
       - run: framework/sake dev/build
 
       # run tests!

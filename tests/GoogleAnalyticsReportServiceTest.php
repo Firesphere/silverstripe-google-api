@@ -25,6 +25,9 @@ class GoogleAnalyticsReportServiceTest extends SapphireTest
     public function setUp()
     {
         parent::setUp();
+        if (!defined('SS_ANALYTICS_KEY')) {
+            define('SS_ANALYTICS_KEY', 'google-api/tests/fixtures/test.json');
+        }
         $this->client = new GoogleClientService();
         $this->service = new GoogleAnalyticsReportService($this->client);
         $siteConfig = SiteConfig::current_site_config();

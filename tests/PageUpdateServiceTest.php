@@ -17,7 +17,7 @@ class PageUpdateServiceTest extends SapphireTest
     public function setUp()
     {
         $this->service = new PageUpdateService();
-        return parent::setUp();
+        parent::setUp();
     }
     
     /**
