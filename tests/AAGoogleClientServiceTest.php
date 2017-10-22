@@ -3,6 +3,15 @@
 class AAGoogleClientServiceTest extends SapphireTest
 {
     /**
+     * We want this process to be run in a separate process
+     * for constant definition reasons
+     * @var bool
+     */
+    protected $runTestInSeparateProcess = true;
+    protected $preserveGlobalState = true;
+
+
+    /**
      * @expectedException LogicException
      */
     public function testException()

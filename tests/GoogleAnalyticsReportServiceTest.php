@@ -98,6 +98,17 @@ class GoogleAnalyticsReportServiceTest extends SapphireTest
         $this->assertEquals(static::VIEWID, $reportRequest->getViewId());
     }
 
+    public function testGetGetReportRequest()
+    {
+        $reportRequest = $this->service->getReportRequest();
+
+        $getReportRequest = $this->service->getGetReportRequest($reportRequest);
+
+        $this->assertInstanceOf(Google_Service_AnalyticsReporting_GetReportsRequest::class, $getReportRequest);
+        $reportRequest2 = $getReportRequest->getReportRequests();
+        $this->assertEquals($reportRequest, $reportRequest2[0]);
+    }
+
     public function testGetDimension()
     {
         /** @var array|Google_Service_AnalyticsReporting_Dimension[] $dimensions */

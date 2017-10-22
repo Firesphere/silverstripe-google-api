@@ -55,8 +55,7 @@ class GoogleAnalyticsReportService
     {
         $request = $this->getReportRequest();
 
-        $body = new Google_Service_AnalyticsReporting_GetReportsRequest();
-        $body->setReportRequests([$request]);
+        $body = $this->getGetReportRequest($request);
 
         return $this->analytics->reports->batchGet($body);
     }
@@ -77,6 +76,20 @@ class GoogleAnalyticsReportService
         $request->setMetrics([$this->getMetrics()]);
 
         return $request;
+    }
+
+    /**
+     * Yes, thanks to Google's naming, we're doubling up the get here
+     * 
+     * @param $request
+     * @return Google_Service_AnalyticsReporting_GetReportsRequest
+     */
+    public function getGetReportRequest($request)
+    {
+        $body = new Google_Service_AnalyticsReporting_GetReportsRequest();
+        $body->setReportRequests([$request]);
+
+        return $body;
     }
 
     public function getDimensions()
