@@ -24,7 +24,7 @@ class AAGoogleClientServiceTest extends SapphireTest
      */
     public function testCreation()
     {
-        define('SS_ANALYTICS_KEY', 'google-api/tests/fixtures/test.json');
+        define('SS_ANALYTICS_KEY', Director::baseFolder() . DIRECTORY_SEPARATOR . 'google-api/tests/fixtures/test.json');
         $client = new GoogleClientService();
         $this->assertInstanceOf(Google_Client::class, $client->getClient());
     }

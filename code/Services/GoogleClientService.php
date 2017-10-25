@@ -14,12 +14,12 @@ class GoogleClientService
      */
     public function __construct()
     {
-        if (!defined('SS_ANALYTICS_KEY')) {
+        if (!defined('SS_ANALYTICS_KEY') || !file_exists(SS_ANALYTICS_KEY)) {
             throw new LogicException('No analytics API set up');
         }
 
         $client = new Google_Client();
-        $client->setAuthConfig(Director::baseFolder() . DIRECTORY_SEPARATOR . SS_ANALYTICS_KEY);
+        $client->setAuthConfig(SS_ANALYTICS_KEY);
         $client->addScope(Google_Service_Analytics::ANALYTICS_READONLY);
 
         $this->setClient($client);
