@@ -46,6 +46,8 @@ if (class_exists('AbstractQueuedJob')) {
             $clientService = new GoogleClientService();
 
             $this->getReport($clientService);
+
+            $this->jobFinished();
         }
 
         /**
