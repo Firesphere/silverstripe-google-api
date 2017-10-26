@@ -15,17 +15,17 @@ class GoogleClientServiceTest extends SapphireTest
      */
     public function testNoAnalyticsKey()
     {
-        if (!Environment::getEnv('SS_ANALYTICS_KEY')) {
-            Environment::setEnv('SS_ANALYTICS_KEY', 'google-api/tests/fixtures/test.json');
-        }
         new GoogleClientService();
     }
-    
+
     /**
      * Validate it's constructed
      */
     public function testCreation()
     {
+        if (!Environment::getEnv('SS_ANALYTICS_KEY')) {
+            Environment::setEnv('SS_ANALYTICS_KEY', 'google-api/tests/fixtures/test.json');
+        }
         $client = new GoogleClientService();
         $this->assertInstanceOf(Google_Client::class, $client->getClient());
     }
