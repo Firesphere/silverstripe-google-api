@@ -4,6 +4,7 @@ namespace Firesphere\GoogleAPI\Tests;
 
 use Firesphere\GoogleAPI\Services\GoogleClientService;
 use Google_Client;
+use SilverStripe\Control\Director;
 use SilverStripe\Core\Environment;
 use SilverStripe\Dev\SapphireTest;
 
@@ -15,6 +16,9 @@ class GoogleClientServiceTest extends SapphireTest
      */
     public function testNoAnalyticsKey()
     {
+        if (!Environment::getEnv('SS_ANALYTICS_KEY')) {
+            Environment::putEnv('SS_ANALYTICS_KEY');
+        }
         new GoogleClientService();
     }
 
@@ -24,7 +28,7 @@ class GoogleClientServiceTest extends SapphireTest
     public function testCreation()
     {
         if (!Environment::getEnv('SS_ANALYTICS_KEY')) {
-            Environment::setEnv('SS_ANALYTICS_KEY', 'google-api/tests/fixtures/test.json');
+            Environment::setEnv('SS_ANALYTICS_KEY', Director::baseFolder() . DIRECTORY_SEPARATOR . 'google-api/tests/fixtures/test.json');
         }
         $client = new GoogleClientService();
         $this->assertInstanceOf(Google_Client::class, $client->getClient());
