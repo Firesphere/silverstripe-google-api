@@ -80,7 +80,7 @@ class GoogleAnalyticsReportService
 
     /**
      * Yes, thanks to Google's naming, we're doubling up the get here
-     * 
+     *
      * @param $request
      * @return Google_Service_AnalyticsReporting_GetReportsRequest
      */

@@ -47,7 +47,7 @@ if (class_exists('AbstractQueuedJob')) {
 
             $this->getReport($clientService);
 
-            $this->jobFinished();
+            $this->isComplete = true;
         }
 
         /**

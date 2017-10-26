@@ -6,7 +6,6 @@
  */
 class AnalyticsUpdateTaskTest extends SapphireTest
 {
-
     public function testGetTitle()
     {
         $task = AnalyticsUpdateTask::create();
