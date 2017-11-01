@@ -34,11 +34,8 @@ jobs:
             php composer-setup.php --install-dir=/usr/local/bin --filename=composer
             php -r "unlink('composer-setup.php');"
 
-      - run: composer create-project silverstripe/installer:4.x-dev ~/var/www -n
-      - run: composer require firesphere/google-api:4.x-dev -n
+      - run: composer create-project firesphere/google-api:4.x-dev ~/var/www -n
       - run: composer require scriptfusion/phpunit-immediate-exception-printer:^1
-      - run: rm phpunit.xml.dist
-      - run: cp google-api/phpunit.xml.dist .
       - run: vendor/silverstripe/framework/sake dev/build
 
       # run tests!
