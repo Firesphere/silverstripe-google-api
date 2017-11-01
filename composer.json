@@ -20,7 +20,6 @@
   ],
   "require": {
     "php": ">=5.6.0",
-    "silverstripe/recipe-plugin": ">=0.1@dev <1.0",
     "silverstripe/recipe-cms": "1.0.x-dev",
     "google/apiclient": "^2.0"
   },
