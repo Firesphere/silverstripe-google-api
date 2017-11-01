@@ -1,7 +1,7 @@
 {
   "name": "firesphere/google-api",
   "description": "Connect to the Google Analytics API to get page visits",
-  "type": "silverstripe-module",
+  "type": "silverstripe-vendormodule",
   "license": "BSD-3-Clause",
   "keywords": [
     "Ninja Unicorns",
