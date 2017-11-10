@@ -20,7 +20,7 @@ class SiteConfigExtension extends DataExtension
     private static $db = [
         'Viewid'    => 'Varchar(50)',
         'DateRange' => 'Enum("7,30,60,90")',
-        'Metric' => 'Enum("ga:pageviews")'
+        'Metric'    => 'Enum("ga:pageviews")'
     ];
 
     protected static $date_range = [

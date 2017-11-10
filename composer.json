@@ -20,7 +20,7 @@
   ],
   "require": {
     "php": ">=5.6.0",
-    "silverstripe/recipe-cms": "1.0.x-dev",
+    "silverstripe/recipe-cms": "^1.0",
     "google/apiclient": "^2.0"
   },
   "require-dev": {
@@ -38,6 +38,7 @@
       "Firesphere\\GoogleAPI\\Extensions\\": "src/Extensions",
       "Firesphere\\GoogleAPI\\Jobs\\": "src/Jobs",
       "Firesphere\\GoogleAPI\\Services\\": "src/Services",
+      "Firesphere\\GoogleAPI\\Reports\\": "src/Reports",
       "Firesphere\\GoogleAPI\\Tasks\\": "src/Tasks",
       "Firesphere\\GoogleAPI\\Tests\\": "tests/",
       "Firesphere\\GoogleAPI\\Tests\\Mock\\": "tests/mocks"

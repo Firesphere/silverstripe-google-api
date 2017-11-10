@@ -24,7 +24,8 @@ class SiteTreeExtension extends DataExtension
     {
         if ($this->owner->LastAnalyticsUpdate) {
             $fields->addFieldToTab('Root.Analytics', ReadonlyField::create('VisitCount', 'Visit count'));
-            $fields->addFieldToTab('Root.Analytics', ReadonlyField::create('LastAnalyticsUpdate', 'Last update from Google'));
+            $fields->addFieldToTab('Root.Analytics',
+                ReadonlyField::create('LastAnalyticsUpdate', 'Last update from Google'));
         } else {
             $fields->removeByName(array_keys(static::$db));
         }
