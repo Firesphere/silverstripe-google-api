@@ -35,7 +35,6 @@ jobs:
             php -r "unlink('composer-setup.php');"
 
       - run: composer create-project firesphere/google-api:4.x-dev ~/var/www -n
-      - run: composer require scriptfusion/phpunit-immediate-exception-printer:^1
       - run: vendor/silverstripe/framework/sake dev/build
 
       # run tests!

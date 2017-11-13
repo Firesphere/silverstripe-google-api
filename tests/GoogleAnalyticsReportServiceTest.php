@@ -13,6 +13,7 @@ use Google_Service_AnalyticsReporting_GetReportsRequest;
 use Google_Service_AnalyticsReporting_Metric;
 use Google_Service_AnalyticsReporting_ReportRequest;
 use Page;
+use SilverStripe\Control\Director;
 use SilverStripe\Core\Config\Config;
 use SilverStripe\Core\Environment;
 use SilverStripe\Dev\SapphireTest;
@@ -48,7 +49,7 @@ class GoogleAnalyticsReportServiceTest extends SapphireTest
     {
         parent::setUp();
         if (!Environment::getEnv('SS_ANALYTICS_KEY')) {
-            Environment::setEnv('SS_ANALYTICS_KEY', 'tests/fixtures/test.json');
+            Environment::setEnv('SS_ANALYTICS_KEY', './tests/fixtures/test.json');
         }
 
         $this->client = new GoogleClientService();
