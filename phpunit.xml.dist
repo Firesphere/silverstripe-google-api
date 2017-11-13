@@ -6,7 +6,7 @@
     </testsuite>
     <filter>
         <whitelist processUncoveredFilesFromWhitelist="true">
-            <directory suffix=".php">google-api/src/</directory>
+            <directory suffix=".php">src/</directory>
         </whitelist>
     </filter>
 
