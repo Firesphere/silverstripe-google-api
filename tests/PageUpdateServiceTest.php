@@ -21,7 +21,7 @@ class PageUpdateServiceTest extends SapphireTest
      */
     protected $service;
 
-    public function setUp()
+    protected function setUp()
     {
         $this->service = new PageUpdateService();
         /** @var DefaultAdminService $adminService */

@@ -3,6 +3,7 @@
 namespace Firesphere\GoogleAPI\Reports;
 
 use SilverStripe\CMS\Model\SiteTree;
+use SilverStripe\ORM\DataList;
 use SilverStripe\Reports\Report;
 
 /**
@@ -22,6 +23,10 @@ class GoogleVisitReport extends Report
         return _t(__CLASS__.'.GoogleVisitsTitle', 'Google Analytics Visits report');
     }
 
+    /**
+     * @param null $params
+     * @return DataList|SiteTree[]
+     */
     public function sourceRecords($params = null)
     {
         return SiteTree::get()->sort('VisitCount DESC');
@@ -29,12 +34,12 @@ class GoogleVisitReport extends Report
 
     public function columns()
     {
-        return array(
+        return [
             'Title'      => [
                 'title' => 'Title', // todo: use NestedTitle(2)
                 'link'  => true,
             ],
             'VisitCount' => 'Visits'
-        );
+        ];
     }
 }

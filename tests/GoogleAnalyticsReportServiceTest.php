@@ -45,7 +45,7 @@ class GoogleAnalyticsReportServiceTest extends SapphireTest
     /**
      * Create the Services
      */
-    public function setUp()
+    protected function setUp()
     {
         parent::setUp();
         if (!Environment::getEnv('SS_ANALYTICS_KEY')) {
