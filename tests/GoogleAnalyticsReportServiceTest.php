@@ -48,7 +48,7 @@ class GoogleAnalyticsReportServiceTest extends SapphireTest
     {
         parent::setUp();
         if (!Environment::getEnv('SS_ANALYTICS_KEY')) {
-            Environment::setEnv('SS_ANALYTICS_KEY', 'google-api/tests/fixtures/test.json');
+            Environment::setEnv('SS_ANALYTICS_KEY', 'tests/fixtures/test.json');
         }
 
         $this->client = new GoogleClientService();
