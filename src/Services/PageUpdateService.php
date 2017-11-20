@@ -3,6 +3,7 @@
 namespace Firesphere\GoogleAPI\Services;
 
 use Page;
+use SilverStripe\CMS\Model\SiteTree;
 use SilverStripe\ORM\DataList;
 use SilverStripe\ORM\ValidationException;
 
@@ -83,6 +84,7 @@ class PageUpdateService
             }
             /** @var DataList|Page[] $children */
             $children = $page->AllChildren();
+            /** @var SiteTree $page */
             $page = $children->filter(['URLSegment' => $segment])->first();
         }
 

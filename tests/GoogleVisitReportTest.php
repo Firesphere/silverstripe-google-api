@@ -8,7 +8,6 @@
 
 namespace Firesphere\GoogleAPI\Tests;
 
-
 use Firesphere\GoogleAPI\Reports\GoogleVisitReport;
 use SilverStripe\CMS\Model\SiteTree;
 use SilverStripe\Dev\SapphireTest;
@@ -55,5 +54,4 @@ class GoogleVisitReportTest extends SapphireTest
 
         $this->assertEquals($expected, $this->report->columns());
     }
-
 }

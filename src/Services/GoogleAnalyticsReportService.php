@@ -262,7 +262,7 @@ class GoogleAnalyticsReportService
         /** @var DataList|Page[] $pages */
         $pages = SiteTree::get();
         if ($blacklist) {
-            $pages = $this->getBlacklist($blacklist, $pages);
+            $pages = $this->getBlacklistPages($blacklist, $pages);
         }
         if ($whitelist) {
             $pages = $this->getWhitelistPages($whitelist, $pages);
@@ -281,13 +281,15 @@ class GoogleAnalyticsReportService
      * @param DataList $pages
      * @return DataList
      */
-    protected function getBlacklist($blacklist, $pages)
+    protected function getBlacklistPages($blacklist, $pages)
     {
-        $ids = [];
+        $ids = [[]];
         foreach ($blacklist as $class) {
             $blacklistpages = $class::get();
-            $ids = array_merge($ids, $blacklistpages->column('ID'));
+            $ids[] = $blacklistpages->column('ID');
         }
+
+        $ids = array_merge(...$ids);
         $pages = $pages->exclude(['ID' => $ids]);
 
         return $pages;
@@ -300,15 +302,18 @@ class GoogleAnalyticsReportService
      */
     protected function getWhitelistPages($whitelist, $pages)
     {
-        $ids = [];
+        $ids = [[]];
         foreach ($whitelist as $class) {
             $nowDate = date('Y-m-d');
             $whitelistpages = $class::get()
                 // This needs to be a where because of `IS NULL`
                 ->where("(`SiteTree`.`LastAnalyticsUpdate` < $nowDate)
                         OR (`SiteTree`.`LastAnalyticsUpdate` IS NULL)");
-            $ids = array_merge($ids, $whitelistpages->column('ID'));
+            $ids[] = $whitelistpages->column('ID');
         }
+
+        $ids = array_merge(...$ids);
+
         $pages = $pages->filter(['ID' => $ids]);
 
         return $pages;

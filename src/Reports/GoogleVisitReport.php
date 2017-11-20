@@ -12,7 +12,6 @@ use SilverStripe\Reports\Report;
  */
 class GoogleVisitReport extends Report
 {
-
     public function title()
     {
         return _t(__CLASS__.'.GOOGLEVISITS', 'Visitcount from Google Analytics');
