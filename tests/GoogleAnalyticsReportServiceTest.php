@@ -152,7 +152,7 @@ class GoogleAnalyticsReportServiceTest extends SapphireTest
      */
     public function testGetStartDimensionFilters()
     {
-        Config::inst()->update(GoogleAnalyticsReportService::class, 'starts_with', '/');
+        Config::modify()->merge(GoogleAnalyticsReportService::class, 'starts_with', '/');
 
         $filters = $this->service->getDimensionFilters();
 
@@ -171,7 +171,7 @@ class GoogleAnalyticsReportServiceTest extends SapphireTest
      */
     public function testGetEndDimensionFilters()
     {
-        Config::inst()->update(GoogleAnalyticsReportService::class, 'ends_with', '/');
+        Config::modify()->merge(GoogleAnalyticsReportService::class, 'ends_with', '/');
 
         $filters = $this->service->getDimensionFilters();
 
@@ -240,7 +240,7 @@ class GoogleAnalyticsReportServiceTest extends SapphireTest
      */
     public function testGetBlacklistedPages()
     {
-        Config::inst()->update(GoogleAnalyticsReportService::class, 'blacklist', [ErrorPage::class]);
+        Config::modify()->merge(GoogleAnalyticsReportService::class, 'blacklist', [ErrorPage::class]);
         $pages = $this->service->getPages();
         $this->assertTrue(is_array($pages));
         $this->assertNotContains('page-not-found', $pages);
@@ -251,7 +251,7 @@ class GoogleAnalyticsReportServiceTest extends SapphireTest
      */
     public function testGetWhitelistedPages()
     {
-        Config::inst()->update(GoogleAnalyticsReportService::class, 'whitelist', [Page::class]);
+        Config::modify()->merge(GoogleAnalyticsReportService::class, 'whitelist', [Page::class]);
         $pages = $this->service->getPages();
         $this->assertTrue(is_array($pages));
         // There seems to be some chaining in effect, causing the array to be empty
