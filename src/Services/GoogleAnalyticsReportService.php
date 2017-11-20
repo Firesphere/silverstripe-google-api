@@ -15,6 +15,7 @@ use Page;
 use SilverStripe\CMS\Model\SiteTree;
 use SilverStripe\Core\Config\Config;
 use SilverStripe\ORM\DataList;
+use SilverStripe\ORM\DataObject;
 use SilverStripe\SiteConfig\SiteConfig;
 
 /**
@@ -196,14 +197,13 @@ class GoogleAnalyticsReportService
      */
     public function getDimensionFilters()
     {
-        $filters = [];
         $startWith = config::inst()->get(static::class, 'starts_with');
         $endWith = config::inst()->get(static::class, 'ends_with');
         if ($startWith) {
-            return $this->createFilter('BEGINS_WITH', $startWith, $filters);
+            return $this->createFilter('BEGINS_WITH', $startWith);
         }
         if ($endWith) {
-            return $this->createFilter('ENDS_WITH', $endWith, $filters);
+            return $this->createFilter('ENDS_WITH', $endWith);
         }
 
         return $this->getPageDimensionFilters();
@@ -305,6 +305,7 @@ class GoogleAnalyticsReportService
         $ids = [[]];
         foreach ($whitelist as $class) {
             $nowDate = date('Y-m-d');
+            /** @var DataList|DataObject[] $whitelistpages */
             $whitelistpages = $class::get()
                 // This needs to be a where because of `IS NULL`
                 ->where("(`SiteTree`.`LastAnalyticsUpdate` < $nowDate)
@@ -325,7 +326,7 @@ class GoogleAnalyticsReportService
      * @param $filters
      * @return array|Google_Service_AnalyticsReporting_DimensionFilter[]
      */
-    protected function createFilter($operator, $page, $filters)
+    protected function createFilter($operator, $page, $filters = [])
     {
         $filter = new Google_Service_AnalyticsReporting_DimensionFilter();
         $filter->setOperator($operator);
