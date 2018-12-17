@@ -7,8 +7,6 @@ use SilverStripe\Forms\ReadonlyField;
 use SilverStripe\ORM\DataExtension;
 
 /**
- * Class PageExtension
- *
  * @property \SilverStripe\CMS\Model\SiteTree|\Firesphere\GoogleAPI\Extensions\SiteTreeExtension $owner
  * @property int $VisitCount
  * @property string $LastAnalyticsUpdate

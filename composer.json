@@ -1,49 +1,44 @@
 {
-  "name": "firesphere/google-api",
-  "description": "Connect to the Google Analytics API to get page visits",
-  "type": "silverstripe-vendormodule",
-  "license": "BSD-3-Clause",
-  "keywords": [
-    "Ninja Unicorns",
-    "silverstripe",
-    "Google",
-    "Analytics",
-    "API",
-    "Ninja",
-    "Unicorns"
-  ],
-  "authors": [
-    {
-      "name": "Ninja Unicorns",
-      "email": "ninja-unicorns@silverstripe.com"
-    }
-  ],
-  "require": {
-    "php": ">=5.6.0",
-    "silverstripe/recipe-cms": "^1.0",
-    "google/apiclient": "^2.0"
-  },
-  "require-dev": {
-    "scriptfusion/phpunit-immediate-exception-printer": "^1"
-  },
-  "extra": {
-    "installer-name": "google-api",
-    "branch-alias": {
-      "2.x-dev": "2.0.x-dev",
-      "dev-4.x": "2.x-dev"
-    }
-  },
-  "autoload": {
-    "psr-4": {
-      "Firesphere\\GoogleAPI\\Extensions\\": "src/Extensions",
-      "Firesphere\\GoogleAPI\\Jobs\\": "src/Jobs",
-      "Firesphere\\GoogleAPI\\Services\\": "src/Services",
-      "Firesphere\\GoogleAPI\\Reports\\": "src/Reports",
-      "Firesphere\\GoogleAPI\\Tasks\\": "src/Tasks",
-      "Firesphere\\GoogleAPI\\Tests\\": "tests/",
-      "Firesphere\\GoogleAPI\\Tests\\Mock\\": "tests/mocks"
-    }
-  },
-  "prefer-stable": true,
-  "minimum-stability": "dev"
+    "name": "firesphere/google-api",
+    "description": "Connect to the Google Analytics API to get page visits",
+    "type": "silverstripe-vendormodule",
+    "license": "BSD-3-Clause",
+    "keywords": [
+        "Ninja Unicorns",
+        "silverstripe",
+        "Google",
+        "Analytics",
+        "API",
+        "Ninja",
+        "Unicorns"
+    ],
+    "authors": [
+        {
+            "name": "Ninja Unicorns",
+            "email": "ninja-unicorns@silverstripe.com"
+        }
+    ],
+    "require": {
+        "php": ">=5.6.0",
+        "silverstripe/recipe-cms": "^4.0",
+        "google/apiclient": "^2.0"
+    },
+    "require-dev": {
+        "scriptfusion/phpunit-immediate-exception-printer": "1.0.1"
+    },
+    "extra": {
+        "installer-name": "google-api",
+        "branch-alias": {
+            "2.x-dev": "2.0.x-dev",
+            "dev-4.x": "2.x-dev"
+        }
+    },
+    "autoload": {
+        "psr-4": {
+            "Firesphere\\GoogleAPI\\": "src/",
+            "Firesphere\\GoogleAPI\\Tests\\": "tests/"
+        }
+    },
+    "prefer-stable": true,
+    "minimum-stability": "dev"
 }
