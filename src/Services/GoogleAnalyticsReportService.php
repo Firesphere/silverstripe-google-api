@@ -197,8 +197,8 @@ class GoogleAnalyticsReportService
      */
     public function getDimensionFilters()
     {
-        $startWith = config::inst()->get(static::class, 'starts_with');
-        $endWith = config::inst()->get(static::class, 'ends_with');
+        $startWith = Config::inst()->get(static::class, 'starts_with');
+        $endWith = Config::inst()->get(static::class, 'ends_with');
         if ($startWith) {
             return $this->createFilter('BEGINS_WITH', $startWith);
         }
