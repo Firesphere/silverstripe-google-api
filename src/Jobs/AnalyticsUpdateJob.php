@@ -13,7 +13,7 @@ use SilverStripe\ORM\ValidationException;
 use Symbiote\QueuedJobs\Services\AbstractQueuedJob;
 use Symbiote\QueuedJobs\Services\QueuedJobService;
 
-if (class_exists('AbstractQueuedJob')) {
+if (class_exists('Symbiote\\QueuedJobs\\Services\\AbstractQueuedJob')) {
     /**
      * Class AnalyticsUpdateJob
      *
