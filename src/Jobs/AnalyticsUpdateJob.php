@@ -97,7 +97,7 @@ class AnalyticsUpdateJob extends AbstractQueuedJob
     {
         if ($this->service->batched && $this->updateService->batched) {
             /** @var AnalyticsUpdateJob $nextJob */
-            $nextJob = Injector::inst()->get('AnalyticsUpdateJob');
+            $nextJob = Injector::inst()->get(self::class);
             $nextJob->setJobData(1, 0, false, new stdClass(), ['Batched data from Google']);
             /** @var QueuedJobService $jobService */
             $jobService = Injector::inst()->get(QueuedJobService::class);
